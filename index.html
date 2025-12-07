@@ -43,8 +43,6 @@ body.light {
 
 /* Banner Ads */
 .banner-ad {
-  width: calc(100% - 40px);
-  max-width: 900px;
   height: 90px;
   border: 2px solid var(--accent-color);
   border-radius: 14px;
@@ -62,13 +60,16 @@ body.light {
   animation: adSlideIn 1.2s ease forwards;
 }
 
-.top-ad { top: 15px; left: 15px; } 
-.bottom-ad { bottom: 15px; left: 50%; transform: translateX(-50%); }
+/* Top banner: align left with padding */
+.top-ad { top: 15px; left: 50%; transform: translateX(-50%); max-width: 800px; width: 90%; }
+
+/* Bottom banner: match container width */
+.bottom-ad { bottom: 15px; left: 50%; transform: translateX(-50%); max-width: 800px; width: 90%; }
 
 @keyframes adSlideIn { from { opacity: 0; transform: translateY(-15px);} to { opacity:1; transform: translateY(0);} }
 
 /* Settings Icon */
-.settings-icon { position: fixed; top: 15px; left: 15px; font-size: 1.8rem; cursor: pointer; color: var(--accent-color); z-index: 3; opacity:0; animation: iconFadeIn 1.5s ease forwards; }
+.settings-icon { position: fixed; top: 15px; right: calc(50% - 400px + 15px); /* aligned with top banner right edge */ font-size: 1.8rem; cursor: pointer; color: var(--accent-color); z-index: 3; opacity:0; animation: iconFadeIn 1.5s ease forwards; }
 .settings-icon:hover { transform: scale(1.2); }
 @keyframes iconFadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
 
@@ -104,10 +105,9 @@ button:hover { background-color: var(--btn-hover-color); transform: scale(1.05);
 .close-btn:hover { background-color: var(--btn-hover-color); }
 
 @keyframes fadeInSlow { from { opacity: 0; transform: translateY(-15px);} to { opacity:1; transform: translateY(0);} }
-@media (max-width: 600px) { body { padding: 160px 10px;} .banner-ad { height: 70px; font-size: 0.7rem; } }
+@media (max-width: 600px) { body { padding: 160px 10px;} .banner-ad { height: 70px; font-size: 0.7rem; max-width: 90%; } .settings-icon { right: calc(5%); } }
 </style>
 </head>
-
 <body class="dark">
 
 <!-- TOP AD -->
