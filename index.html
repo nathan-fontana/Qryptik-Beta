@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Qryptik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px;
+      position: relative;
+      overflow-x: hidden;
+      background-color: #121212;
+      color: #fff;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: #ffffff;
+      --accent-color: #4caf50;
+      --container-bg: #1e1e1e;
+      --textarea-bg: #2b2b2b;
+      --textarea-color: #f1f1f1;
+      --btn-hover-color: #2e7d32;
+      --toggle-bg-off: #555;
+      --toggle-handle: white;
+      --settings-title-color: #fff;
+      --disclaimer-color: #ff4d4d;
+      --title-color: #4caf50;
+      --subtitle-color: #aaa;
+    }
+
+    body.light {
+      background-color: #f2f2f2;
+      color: #121212;
+      --accent-color: #2196f3;
+      --container-bg: #fff;
+      --textarea-bg: #f7f7f7;
+      --textarea-color: #121212;
+      --btn-hover-color: #1565c0;
+      --toggle-bg-off: #bbb;
+      --toggle-handle: white;
+      --settings-title-color: #000;
+      --disclaimer-color: #d32f2f;
+      --title-color: #000;
+      --subtitle-color: #000;
+    }
+
+    /* Banner Ads */
+    .banner-ad {
+      width: calc(100% - 40px);
+      max-width: 900px;
+      height: 90px;
+      border: 2px solid var(--accent-color);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--container-bg);
+      color: var(--accent-color);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 40px);
+      z-index: 1;
+      box-shadow: 0 0 15px rgba(0,0,0,0.25);
+      opacity: 0;
+      animation: adSlideIn 1.2s ease forwards;
+    }
+
+    .top-ad {
+      top: 15px;
+    }
+
+    .bottom-ad {
+      bottom: 15px;
+    }
+
+    @keyframes adSlideIn {
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    /* Main container */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      padding: 30px;
+      background: var(--container-bg);
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeInSlow 2.2s ease forwards;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: var(--title-color);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      color: var(--subtitle-color);
+      font-weight: 400;
+      margin-bottom: 30px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      border: none;
+      resize: none;
+      font-size: 1.1rem;
+      background-color: var(--textarea-bg);
+      color: var(--textarea-color);
+    }
+
+    textarea:focus {
+      outline: none;
+      box-shadow: 0 0 10px var(--accent-color);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--accent-color);
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--btn-hover-color);
+      transform: scale(1.05);
+    }
+
+    .disclaimer {
+      color: var(--disclaimer-color);
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .settings-icon {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--accent-color);
+      z-index: 3;
+    }
+
+    @keyframes fadeInSlow {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-15px); }
+    }
+
+    /* Mobile fixes */
+    @media (max-width: 600px) {
+      body {
+        padding: 150px 10px;
+      }
+      .banner-ad {
+        height: 70px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="dark">
+
+  <!-- TOP AD -->
+  <div class="banner-ad top-ad">
+    <span>ADVERTISEMENT</span>
+  </div>
+
+  <div class="settings-icon" onclick="alert('Settings coming in V2')">⚙️</div>
+
+  <div class="container">
+    <h1>Qryptik</h1>
+    <h2>A free, easy to use, message encrypter and decrypter.</h2>
+
+    <textarea id="input" placeholder="Input"></textarea>
+    <textarea id="output" placeholder="Output" readonly></textarea>
+
+    <div class="buttons">
+      <button onclick="encrypt()">ENCRYPT</button>
+      <button onclick="decrypt()">DECRYPT</button>
+      <button onclick="copyOutput()">COPY OUTPUT</button>
+    </div>
+
+    <div class="disclaimer">
+      DISCLAIMER: THIS TOOL CAN ONLY DECRYPT MESSAGES THAT WERE ENCRYPTED USING THIS TOOL!!!
+    </div>
+  </div>
+
+  <!-- BOTTOM AD -->
+  <div class="banner-ad bottom-ad">
+    <span>ADVERTISEMENT</span>
+  </div>
+
+  <script>
+    const prefixes = ['-2b', '-9x', '-af', '-mt', '-kq', '-zz', '-pl', '-yx', '-je', '-hr'];
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+    function generateKey() {
+      const arr = alphabet.split('');
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.join('');
+    }
+
+    function invertKey(key) {
+      const map = {};
+      for (let i = 0; i < key.length; i++) {
+        map[key[i]] = alphabet[i];
+      }
+      return map;
+    }
+
+    function applyCipher(text, keyMap) {
+      return text.split('').map(ch => {
+        const lower = ch.toLowerCase();
+        if (alphabet.includes(lower)) {
+          const cipherChar = keyMap[lower];
+          return (ch === lower) ? cipherChar : cipherChar.toUpperCase();
+        }
+        return ch;
+      }).join('');
+    }
+
+    function encrypt() {
+      const inputRaw = document.getElementById("input").value.trim();
+      const output = document.getElementById("output");
+
+      if (!inputRaw) {
+        output.value = "Input box field blank.";
+        return;
+      }
+
+      const key = generateKey();
+      const reversedKey = key.split('').reverse().join('');
+
+      const encryptionMap = {};
+      for (let i = 0; i < alphabet.length; i++) {
+        encryptionMap[alphabet[i]] = key[i];
+      }
+
+      const ciphered = applyCipher(inputRaw, encryptionMap);
+      const reversedCipher = ciphered.split('').reverse().join('');
+
+      const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+
+      output.value = reversedKey + prefix + reversedCipher;
+    }
+
+    function decrypt() {
+      const input = document.getElementById("input").value.trim();
+      const output = document.getElementById("output");
+
+      if (!input) {
+        output.value = "Input box field blank.";
+        return;
+      }
+
+      if (input.length < 29 || !input.includes('-')) {
+        output.value = "Invalid encrypted format!";
+        return;
+      }
+
+      const reversedKey = input.slice(0, 26).split('').reverse().join('');
+      const encryptedMessage = input.slice(29);
+
+      const decryptionMap = invertKey(reversedKey);
+      const reversedMessage = encryptedMessage.split('').reverse().join('');
+      const decrypted = applyCipher(reversedMessage, decryptionMap);
+
+      output.value = decrypted;
+    }
+
+    function copyOutput() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+    }
+  </script>
+
+</body>
+</html>
