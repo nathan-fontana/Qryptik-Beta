@@ -61,7 +61,13 @@ body.light {
   opacity: 0;
   animation: adSlideIn 1.2s ease forwards;
 }
-
+.banner-ad::after {
+  content: "Error, unable to load advertisement.";
+  position: absolute;
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  text-align: center;
+}
 .top-ad { top: 15px; }
 .bottom-ad { bottom: 15px; }
 
@@ -70,8 +76,8 @@ body.light {
 /* Settings Icon */
 .settings-icon {
   position: fixed;
-  top: 45px;      /* slightly lower */
-  right: calc(50% - 360px); /* slightly left to center between page edge and top banner */
+  top: 45px;    
+  right: calc(50% - 380px); /* moved slightly more left than before */
   font-size: 1.8rem;
   cursor: pointer;
   color: var(--accent-color);
