@@ -7,7 +7,7 @@
 <style>
 * { box-sizing: border-box; transition: background-color 0.5s ease, color 0.5s ease; }
 html, body { height: 100%; margin: 0; font-family: 'Rubik', sans-serif; }
-body { display: flex; align-items: center; justify-content: center; padding: 140px 20px; position: relative; overflow-x: hidden; background-color: #121212; color: #fff; }
+body { display: flex; align-items: center; justify-content: center; padding: 100px 20px; position: relative; overflow-x: hidden; background-color: #121212; color: #fff; }
 
 body.dark {
   background-color: #121212;
@@ -55,17 +55,17 @@ body.light {
   color: var(--accent-color);
   font-size: 0.8rem;
   letter-spacing: 2px;
-  position: absolute;
+  position: fixed;
   z-index: 1;
   box-shadow: 0 0 15px rgba(0,0,0,0.25);
   opacity: 0;
   animation: adSlideIn 1.2s ease forwards;
 }
 
-.top-ad { top: 15px; left: 70px; } /* shifted slightly right */
+.top-ad { top: 15px; left: 20px; } /* shifted left slightly to avoid gear */
 .bottom-ad { bottom: 15px; left: 50%; transform: translateX(-50%); }
 
-@keyframes adSlideIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(15px); } }
+@keyframes adSlideIn { from { opacity: 0; transform: translateY(-15px);} to { opacity:1; transform: translateY(0);} }
 
 /* Container */
 .container { width: 100%; max-width: 800px; text-align: center; padding: 30px; background: var(--container-bg); border-radius: 16px; box-shadow: 0 0 30px rgba(0,0,0,0.3); position: relative; z-index: 2; opacity: 0; animation: fadeInSlow 2.2s ease forwards; }
@@ -81,7 +81,7 @@ button:hover { background-color: var(--btn-hover-color); transform: scale(1.05);
 .disclaimer { color: var(--disclaimer-color); margin-top: 20px; font-weight: bold; font-size: 0.9rem; }
 
 /* Settings Icon & Tab */
-.settings-icon { position: absolute; top: 25px; right: 25px; font-size: 1.8rem; cursor: pointer; color: var(--accent-color); z-index: 3; transition: transform 0.15s ease, color 0.5s ease; }
+.settings-icon { position: fixed; top: 25px; right: 25px; font-size: 1.8rem; cursor: pointer; color: var(--accent-color); z-index: 3; transition: transform 0.15s ease, color 0.5s ease; }
 .settings-icon:hover { transform: scale(1.2); }
 .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
 .overlay.active { opacity: 1; pointer-events: auto; }
@@ -100,9 +100,9 @@ button:hover { background-color: var(--btn-hover-color); transform: scale(1.05);
 .close-btn { margin-top: 10px; padding: 10px 20px; background-color: var(--accent-color); border: none; border-radius: 8px; color: white; font-size: 1rem; cursor: pointer; display: block; width: 100%; max-width: 600px; }
 .close-btn:hover { background-color: var(--btn-hover-color); }
 
-@keyframes fadeInSlow { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInSlow { from { opacity: 0; transform: translateY(-15px);} to { opacity:1; transform: translateY(0);} }
 
-@media (max-width: 600px) { body { padding: 180px 10px; } .banner-ad { height: 70px; font-size: 0.7rem; left: 50% !important; transform: translateX(-50%); } }
+@media (max-width: 600px) { body { padding: 160px 10px;} .banner-ad { height: 70px; font-size: 0.7rem; left: 50% !important; transform: translateX(-50%); } }
 </style>
 </head>
 
@@ -168,13 +168,12 @@ This tool was made using the help of ChatGPT.
 </div>
 
 <script>
+// Cipher helpers
 const prefixes = ['-2b','-9x','-af','-mt','-kq','-zz','-pl','-yx','-je','-hr'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-
-// Cipher helpers
-function generateKey() { const arr = alphabet.split(''); for (let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr.join(''); }
-function invertKey(key){ const map={}; for(let i=0;i<key.length;i++){map[key[i]]=alphabet[i];} return map; }
-function applyCipher(text,keyMap){ return text.split('').map(ch=>{const lower=ch.toLowerCase();if(alphabet.includes(lower)){const cipherChar=keyMap[lower];return(ch===lower)?cipherChar:cipherChar.toUpperCase();} return ch; }).join(''); }
+function generateKey(){const arr=alphabet.split('');for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr.join('');}
+function invertKey(key){const map={};for(let i=0;i<key.length;i++){map[key[i]]=alphabet[i];} return map;}
+function applyCipher(text,keyMap){return text.split('').map(ch=>{const lower=ch.toLowerCase();if(alphabet.includes(lower)){const cipherChar=keyMap[lower];return(ch===lower)?cipherChar:cipherChar.toUpperCase();} return ch;}).join('');}
 
 // Encrypt/Decrypt
 function encrypt(){const inputRaw=document.getElementById("input").value.trim();const output=document.getElementById("output");if(!inputRaw){output.value="Input box field blank.";return;}const key=generateKey();const reversedKey=key.split('').reverse().join('');const encryptionMap={};for(let i=0;i<alphabet.length;i++){encryptionMap[alphabet[i]]=key[i];}const ciphered=applyCipher(inputRaw,encryptionMap);const reversedCipher=ciphered.split('').reverse().join('');const prefix=prefixes[Math.floor(Math.random()*prefixes.length)];output.value=reversedKey+prefix+reversedCipher;}
@@ -186,9 +185,8 @@ function openSettings(){document.getElementById("overlay").classList.add("active
 function closeSettings(){const overlay=document.getElementById("overlay");const tab=document.getElementById("settingsTab");tab.classList.remove("fade-in");tab.classList.add("fade-out");overlay.classList.remove("active");setTimeout(()=>{tab.classList.remove("show");document.getElementById("gear").style.display="block";},400);}
 function toggleTheme(){const body=document.body;body.classList.toggle("dark");body.classList.toggle("light");}
 
-// Google AdSense init (just call when ready)
+// Google AdSense init (call after loading)
 (adsbygoogle=window.adsbygoogle||[]).push({});
 </script>
-
 </body>
 </html>
