@@ -1,326 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Qryptik</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-      transition: background-color 0.5s ease, color 0.5s ease;
-    }
+<meta charset="UTF-8" />
+<title>Qryptik</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; transition: background-color 0.5s ease, color 0.5s ease; }
+html, body { height: 100%; margin: 0; font-family: 'Rubik', sans-serif; }
+body { display: flex; align-items: center; justify-content: center; padding: 140px 20px; position: relative; overflow-x: hidden; background-color: #121212; color: #fff; }
 
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Rubik', sans-serif;
-    }
+body.dark {
+  background-color: #121212;
+  color: #fff;
+  --accent-color: #4caf50;
+  --container-bg: #1e1e1e;
+  --textarea-bg: #2b2b2b;
+  --textarea-color: #f1f1f1;
+  --btn-hover-color: #2e7d32;
+  --toggle-bg-off: #555;
+  --toggle-handle: white;
+  --settings-title-color: #fff;
+  --disclaimer-color: #ff4d4d;
+  --title-color: #4caf50;
+  --subtitle-color: #aaa;
+}
 
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 20px;
-      position: relative;
-      overflow-x: hidden;
-      background-color: #121212;
-      color: #fff;
-    }
+body.light {
+  background-color: #f2f2f2;
+  color: #121212;
+  --accent-color: #2196f3;
+  --container-bg: #fff;
+  --textarea-bg: #f7f7f7;
+  --textarea-color: #121212;
+  --btn-hover-color: #1565c0;
+  --toggle-bg-off: #bbb;
+  --toggle-handle: white;
+  --settings-title-color: #000;
+  --disclaimer-color: #d32f2f;
+  --title-color: #000;
+  --subtitle-color: #000;
+}
 
-    body.dark {
-      background-color: #121212;
-      color: #ffffff;
-      --accent-color: #4caf50;
-      --container-bg: #1e1e1e;
-      --textarea-bg: #2b2b2b;
-      --textarea-color: #f1f1f1;
-      --btn-hover-color: #2e7d32;
-      --toggle-bg-off: #555;
-      --toggle-handle: white;
-      --settings-title-color: #fff;
-      --disclaimer-color: #ff4d4d;
-      --title-color: #4caf50;
-      --subtitle-color: #aaa;
-    }
+/* Banner Ads */
+.banner-ad {
+  width: calc(100% - 40px);
+  max-width: 900px;
+  height: 90px;
+  border: 2px solid var(--accent-color);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--container-bg);
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+  opacity: 0;
+  animation: adSlideIn 1.2s ease forwards;
+}
 
-    body.light {
-      background-color: #f2f2f2;
-      color: #121212;
-      --accent-color: #2196f3;
-      --container-bg: #fff;
-      --textarea-bg: #f7f7f7;
-      --textarea-color: #121212;
-      --btn-hover-color: #1565c0;
-      --toggle-bg-off: #bbb;
-      --toggle-handle: white;
-      --settings-title-color: #000;
-      --disclaimer-color: #d32f2f;
-      --title-color: #000;
-      --subtitle-color: #000;
-    }
+.top-ad { top: 15px; left: 70px; } /* shifted slightly right */
+.bottom-ad { bottom: 15px; left: 50%; transform: translateX(-50%); }
 
-    /* Banner Ads */
-    .banner-ad {
-      width: calc(100% - 40px);
-      max-width: 900px;
-      height: 90px;
-      border: 2px solid var(--accent-color);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--container-bg);
-      color: var(--accent-color);
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%, 40px);
-      z-index: 1;
-      box-shadow: 0 0 15px rgba(0,0,0,0.25);
-      opacity: 0;
-      animation: adSlideIn 1.2s ease forwards;
-    }
+@keyframes adSlideIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(15px); } }
 
-    .top-ad {
-      top: 15px;
-    }
+/* Container */
+.container { width: 100%; max-width: 800px; text-align: center; padding: 30px; background: var(--container-bg); border-radius: 16px; box-shadow: 0 0 30px rgba(0,0,0,0.3); position: relative; z-index: 2; opacity: 0; animation: fadeInSlow 2.2s ease forwards; }
 
-    .bottom-ad {
-      bottom: 15px;
-    }
+h1 { font-size: 3rem; margin-bottom: 10px; color: var(--title-color); }
+h2 { font-size: 1.2rem; color: var(--subtitle-color); font-weight: 400; margin-bottom: 30px; }
+textarea { width: 100%; height: 140px; margin-bottom: 20px; padding: 15px; border-radius: 12px; border: none; resize: none; font-size: 1.1rem; background-color: var(--textarea-bg); color: var(--textarea-color); }
+textarea:focus { outline: none; box-shadow: 0 0 10px var(--accent-color); }
+textarea[readonly] { opacity: 0.9; }
+.buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+button { padding: 14px 24px; font-size: 1rem; border: none; border-radius: 10px; background-color: var(--accent-color); color: white; cursor: pointer; }
+button:hover { background-color: var(--btn-hover-color); transform: scale(1.05); }
+.disclaimer { color: var(--disclaimer-color); margin-top: 20px; font-weight: bold; font-size: 0.9rem; }
 
-    @keyframes adSlideIn {
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
+/* Settings Icon & Tab */
+.settings-icon { position: absolute; top: 25px; right: 25px; font-size: 1.8rem; cursor: pointer; color: var(--accent-color); z-index: 3; transition: transform 0.15s ease, color 0.5s ease; }
+.settings-icon:hover { transform: scale(1.2); }
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+.overlay.active { opacity: 1; pointer-events: auto; }
+.settings-tab { position: relative; background: var(--container-bg); border-radius: 16px; padding: 30px; max-width: 600px; width: 90%; box-shadow: 0 0 30px rgba(0,0,0,0.3); text-align: left; display: none; z-index: 1100; opacity: 1; color: var(--settings-title-color); transition: opacity 0.3s ease, transform 0.3s ease; transform-origin: center; }
+.settings-tab.show { display: block; }
+.settings-tab.fade-in { opacity: 1; transform: translateY(0); }
+.settings-tab.fade-out { opacity: 0; transform: translateY(-20px); }
+.settings-tab h3 { font-size: 2rem; margin-bottom: 20px; color: var(--settings-title-color); }
+.settings-tab .category { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #999; margin: 20px 0 10px; }
+.toggle-switch { display: flex; align-items: center; justify-content: space-between; user-select: none; margin-bottom: 30px; }
+.toggle-switch label { cursor: pointer; font-size: 1rem; user-select: none; flex: 1; }
+.toggle-switch input { appearance: none; width: 50px; height: 26px; background: var(--toggle-bg-off); border-radius: 50px; position: relative; outline: none; transition: background 0.3s ease; cursor: pointer; flex-shrink: 0; }
+.toggle-switch input::before { content: ''; position: absolute; width: 22px; height: 22px; top: 2px; left: 2px; background: var(--toggle-handle); border-radius: 50%; transition: transform 0.3s ease; }
+.toggle-switch input:checked { background: var(--accent-color); }
+.toggle-switch input:checked::before { transform: translateX(24px); }
+.close-btn { margin-top: 10px; padding: 10px 20px; background-color: var(--accent-color); border: none; border-radius: 8px; color: white; font-size: 1rem; cursor: pointer; display: block; width: 100%; max-width: 600px; }
+.close-btn:hover { background-color: var(--btn-hover-color); }
 
-    /* Main container */
-    .container {
-      width: 100%;
-      max-width: 800px;
-      text-align: center;
-      padding: 30px;
-      background: var(--container-bg);
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      animation: fadeInSlow 2.2s ease forwards;
-    }
+@keyframes fadeInSlow { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      color: var(--title-color);
-    }
-
-    h2 {
-      font-size: 1.2rem;
-      color: var(--subtitle-color);
-      font-weight: 400;
-      margin-bottom: 30px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 140px;
-      margin-bottom: 20px;
-      padding: 15px;
-      border-radius: 12px;
-      border: none;
-      resize: none;
-      font-size: 1.1rem;
-      background-color: var(--textarea-bg);
-      color: var(--textarea-color);
-    }
-
-    textarea:focus {
-      outline: none;
-      box-shadow: 0 0 10px var(--accent-color);
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    button {
-      padding: 14px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--accent-color);
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: var(--btn-hover-color);
-      transform: scale(1.05);
-    }
-
-    .disclaimer {
-      color: var(--disclaimer-color);
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    .settings-icon {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: var(--accent-color);
-      z-index: 3;
-    }
-
-    @keyframes fadeInSlow {
-      to { opacity: 1; transform: translateY(0); }
-      from { opacity: 0; transform: translateY(-15px); }
-    }
-
-    /* Mobile fixes */
-    @media (max-width: 600px) {
-      body {
-        padding: 150px 10px;
-      }
-      .banner-ad {
-        height: 70px;
-        font-size: 0.7rem;
-      }
-    }
-  </style>
+@media (max-width: 600px) { body { padding: 180px 10px; } .banner-ad { height: 70px; font-size: 0.7rem; left: 50% !important; transform: translateX(-50%); } }
+</style>
 </head>
 
 <body class="dark">
 
-  <!-- TOP AD -->
-  <div class="banner-ad top-ad">
-    <span>ADVERTISEMENT</span>
+<!-- TOP AD -->
+<div class="banner-ad top-ad">
+  <!-- REPLACE WITH ADSENSE CODE -->
+  <ins class="adsbygoogle"
+       style="display:block;width:728px;height:90px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"></ins>
+</div>
+
+<!-- SETTINGS ICON -->
+<div class="settings-icon" id="gear" onclick="openSettings()">⚙️</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+  <h1>Qryptik</h1>
+  <h2>A free, easy to use, message encrypter and decrypter.</h2>
+
+  <textarea id="input" placeholder="Input"></textarea>
+  <textarea id="output" placeholder="Output" readonly></textarea>
+
+  <div class="buttons">
+    <button onclick="encrypt()">ENCRYPT</button>
+    <button onclick="decrypt()">DECRYPT</button>
+    <button onclick="copyOutput()">COPY OUTPUT</button>
   </div>
 
-  <div class="settings-icon" onclick="alert('Settings coming in V2')">⚙️</div>
+  <div class="disclaimer">DISCLAIMER: THIS TOOL CAN ONLY DECRYPT MESSAGES THAT WERE ENCRYPTED USING THIS TOOL!!!</div>
+</div>
 
-  <div class="container">
-    <h1>Qryptik</h1>
-    <h2>A free, easy to use, message encrypter and decrypter.</h2>
+<!-- BOTTOM AD -->
+<div class="banner-ad bottom-ad">
+  <!-- REPLACE WITH ADSENSE CODE -->
+  <ins class="adsbygoogle"
+       style="display:block;width:728px;height:90px"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"></ins>
+</div>
 
-    <textarea id="input" placeholder="Input"></textarea>
-    <textarea id="output" placeholder="Output" readonly></textarea>
+<!-- SETTINGS OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="settings-tab" id="settingsTab">
+    <h3>Settings</h3>
 
-    <div class="buttons">
-      <button onclick="encrypt()">ENCRYPT</button>
-      <button onclick="decrypt()">DECRYPT</button>
-      <button onclick="copyOutput()">COPY OUTPUT</button>
+    <div class="category">Themes</div>
+    <div class="toggle-switch">
+      <label for="themeToggle">Dark Mode</label>
+      <input type="checkbox" id="themeToggle" checked onchange="toggleTheme()" />
     </div>
 
-    <div class="disclaimer">
-      DISCLAIMER: THIS TOOL CAN ONLY DECRYPT MESSAGES THAT WERE ENCRYPTED USING THIS TOOL!!!
-    </div>
+    <div class="category">Credits</div>
+    <textarea class="credits-textbox" readonly rows="3">
+Creator: Nathan Fontana
+This tool was made using the help of ChatGPT.
+    </textarea>
+
+    <button class="close-btn" onclick="closeSettings()">Close</button>
   </div>
+</div>
 
-  <!-- BOTTOM AD -->
-  <div class="banner-ad bottom-ad">
-    <span>ADVERTISEMENT</span>
-  </div>
+<script>
+const prefixes = ['-2b','-9x','-af','-mt','-kq','-zz','-pl','-yx','-je','-hr'];
+const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-  <script>
-    const prefixes = ['-2b', '-9x', '-af', '-mt', '-kq', '-zz', '-pl', '-yx', '-je', '-hr'];
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+// Cipher helpers
+function generateKey() { const arr = alphabet.split(''); for (let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr.join(''); }
+function invertKey(key){ const map={}; for(let i=0;i<key.length;i++){map[key[i]]=alphabet[i];} return map; }
+function applyCipher(text,keyMap){ return text.split('').map(ch=>{const lower=ch.toLowerCase();if(alphabet.includes(lower)){const cipherChar=keyMap[lower];return(ch===lower)?cipherChar:cipherChar.toUpperCase();} return ch; }).join(''); }
 
-    function generateKey() {
-      const arr = alphabet.split('');
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr.join('');
-    }
+// Encrypt/Decrypt
+function encrypt(){const inputRaw=document.getElementById("input").value.trim();const output=document.getElementById("output");if(!inputRaw){output.value="Input box field blank.";return;}const key=generateKey();const reversedKey=key.split('').reverse().join('');const encryptionMap={};for(let i=0;i<alphabet.length;i++){encryptionMap[alphabet[i]]=key[i];}const ciphered=applyCipher(inputRaw,encryptionMap);const reversedCipher=ciphered.split('').reverse().join('');const prefix=prefixes[Math.floor(Math.random()*prefixes.length)];output.value=reversedKey+prefix+reversedCipher;}
+function decrypt(){const input=document.getElementById("input").value.trim();const output=document.getElementById("output");if(!input){output.value="Input box field blank.";return;}if(input.length<29||!input.includes('-')){output.value="Invalid encrypted format!";return;}const reversedKey=input.slice(0,26).split('').reverse().join('');const encryptedMessage=input.slice(29);const decryptionMap=invertKey(reversedKey);const reversedMessage=encryptedMessage.split('').reverse().join('');output.value=applyCipher(reversedMessage,decryptionMap);}
+function copyOutput(){const output=document.getElementById("output");output.select();document.execCommand("copy");window.getSelection().removeAllRanges();}
 
-    function invertKey(key) {
-      const map = {};
-      for (let i = 0; i < key.length; i++) {
-        map[key[i]] = alphabet[i];
-      }
-      return map;
-    }
+// Settings tab
+function openSettings(){document.getElementById("overlay").classList.add("active");const tab=document.getElementById("settingsTab");tab.classList.add("show","fade-in");tab.classList.remove("fade-out");document.getElementById("gear").style.display="none";}
+function closeSettings(){const overlay=document.getElementById("overlay");const tab=document.getElementById("settingsTab");tab.classList.remove("fade-in");tab.classList.add("fade-out");overlay.classList.remove("active");setTimeout(()=>{tab.classList.remove("show");document.getElementById("gear").style.display="block";},400);}
+function toggleTheme(){const body=document.body;body.classList.toggle("dark");body.classList.toggle("light");}
 
-    function applyCipher(text, keyMap) {
-      return text.split('').map(ch => {
-        const lower = ch.toLowerCase();
-        if (alphabet.includes(lower)) {
-          const cipherChar = keyMap[lower];
-          return (ch === lower) ? cipherChar : cipherChar.toUpperCase();
-        }
-        return ch;
-      }).join('');
-    }
-
-    function encrypt() {
-      const inputRaw = document.getElementById("input").value.trim();
-      const output = document.getElementById("output");
-
-      if (!inputRaw) {
-        output.value = "Input box field blank.";
-        return;
-      }
-
-      const key = generateKey();
-      const reversedKey = key.split('').reverse().join('');
-
-      const encryptionMap = {};
-      for (let i = 0; i < alphabet.length; i++) {
-        encryptionMap[alphabet[i]] = key[i];
-      }
-
-      const ciphered = applyCipher(inputRaw, encryptionMap);
-      const reversedCipher = ciphered.split('').reverse().join('');
-
-      const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-
-      output.value = reversedKey + prefix + reversedCipher;
-    }
-
-    function decrypt() {
-      const input = document.getElementById("input").value.trim();
-      const output = document.getElementById("output");
-
-      if (!input) {
-        output.value = "Input box field blank.";
-        return;
-      }
-
-      if (input.length < 29 || !input.includes('-')) {
-        output.value = "Invalid encrypted format!";
-        return;
-      }
-
-      const reversedKey = input.slice(0, 26).split('').reverse().join('');
-      const encryptedMessage = input.slice(29);
-
-      const decryptionMap = invertKey(reversedKey);
-      const reversedMessage = encryptedMessage.split('').reverse().join('');
-      const decrypted = applyCipher(reversedMessage, decryptionMap);
-
-      output.value = decrypted;
-    }
-
-    function copyOutput() {
-      const output = document.getElementById("output");
-      output.select();
-      document.execCommand("copy");
-      window.getSelection().removeAllRanges();
-    }
-  </script>
+// Google AdSense init (just call when ready)
+(adsbygoogle=window.adsbygoogle||[]).push({});
+</script>
 
 </body>
 </html>
