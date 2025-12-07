@@ -64,9 +64,13 @@ body.light {
 .banner-ad::after {
   content: "Error, unable to load advertisement.";
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 0.8rem;
   color: var(--accent-color);
   text-align: center;
+  pointer-events: none;
 }
 .top-ad { top: 15px; }
 .bottom-ad { bottom: 15px; }
@@ -77,7 +81,7 @@ body.light {
 .settings-icon {
   position: fixed;
   top: 45px;    
-  right: calc(50% - 380px); /* moved slightly more left than before */
+  right: calc(50% - 350px); /* slightly more right */
   font-size: 1.8rem;
   cursor: pointer;
   color: var(--accent-color);
